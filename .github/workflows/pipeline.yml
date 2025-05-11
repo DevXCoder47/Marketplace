@@ -1,0 +1,39 @@
+name: .NET CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x' # Or your desired .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+      
+
+    # Optional: Publish the application (for web apps)
+    #- name: Publish
+    #  run: dotnet publish -c Release -o ${{ github.workspace }}/publish
+
+    # Optional: Upload build artifacts (e.g., for desktop apps)
+    #- name: Upload Artifacts
+    #  uses: actions/upload-artifact@v3
+    #  with:
+    #    name: build-artifacts
+    #    path: ${{ github.workspace }}/publish
