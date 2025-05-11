@@ -25,7 +25,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Restore Dependencies
-      run: dotnet restore ./Marketplace.sln
+      run: dotnet restore ./Marketplace/Marketplace.sln
 
     - name: Build Application
-      run: dotnet build ./Marketplace.sln --configuration Release --no-restore
+      run: dotnet build ./Marketplace/Marketplace.sln --configuration Release --no-restore
