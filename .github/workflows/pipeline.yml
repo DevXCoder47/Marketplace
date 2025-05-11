@@ -8,32 +8,24 @@ on:
     branches:
       - "**"
 
+env:
+  DOTNET_VERSION: "8.x"
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.x' # Or your desired .NET version
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Restore Dependencies
+      run: dotnet restore ./Marketplace.sln
 
-    - name: Build
-      run: dotnet build --no-restore
-      
-
-    # Optional: Publish the application (for web apps)
-    #- name: Publish
-    #  run: dotnet publish -c Release -o ${{ github.workspace }}/publish
-
-    # Optional: Upload build artifacts (e.g., for desktop apps)
-    #- name: Upload Artifacts
-    #  uses: actions/upload-artifact@v3
-    #  with:
-    #    name: build-artifacts
-    #    path: ${{ github.workspace }}/publish
+    - name: Build Application
+      run: dotnet build ./Marketplace.sln --configuration Release --no-restore
