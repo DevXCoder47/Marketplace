@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Marketplace.Core.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace Marketplace.Storage.Data
         {
 
         }
-
+        public DbSet<Category> Categories { get; set; }
     }
 }
