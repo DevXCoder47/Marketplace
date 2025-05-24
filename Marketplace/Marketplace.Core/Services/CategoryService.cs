@@ -56,7 +56,7 @@ namespace Marketplace.Core.Services
             .SingleOrDefaultAsync(c => c.Name.Equals(name));
 
             if (category == null)
-                throw new ArgumentException("User not found");
+                throw new ArgumentException("Category not found");
 
             return category;
         }
