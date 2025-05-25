@@ -82,6 +82,7 @@ namespace Marketplace.API.Controllers
             {
                 var category = new Category()
                 {
+                    Id = id,
                     Name = categoryDto.Name
                 };
                 return Ok(await _service.UpdateCategory(id, category));
