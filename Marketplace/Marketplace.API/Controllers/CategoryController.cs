@@ -93,7 +93,7 @@ namespace Marketplace.API.Controllers
         }
         #endregion
         #region Delete methods
-        [HttpDelete("delete-category/id/{id}")]
+        [HttpDelete("delete-category/{id}")]
         public async Task<ActionResult<Category>> DeleteCategory([FromRoute] int id)
         {
             try
