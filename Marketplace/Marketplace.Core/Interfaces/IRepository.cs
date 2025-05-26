@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Marketplace.Core.Interfaces
 {
@@ -11,8 +6,9 @@ namespace Marketplace.Core.Interfaces
     {
         DbSet<T> GetAll<T>() where T : class;
         public Task<T> Add<T>(T entity) where T : class;
-        public Task<T> Update<T>(T entity, int id) where T : class;
-        public Task<T?> GetById<T>(int id) where T : class;
-        public Task Delete<T>(int id) where T : class;
+        public Task<T> Update<T>(T entity, int id) where T : class, IEntity;
+        public Task<T?> GetByIdAsync<T>(int id) where T : class, IEntity;
+        IQueryable<T> GetByIdQueryable<T>(int id) where T : class, IEntity;
+        public Task Delete<T>(int id) where T : class, IEntity;
     }
 }

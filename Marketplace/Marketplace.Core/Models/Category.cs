@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using Marketplace.Core.Interfaces;
 
 namespace Marketplace.Core.Models
 {
-    public class Category
+    public class Category : IEntity
     {
         [Key]
         public int Id { get; set; }

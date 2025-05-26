@@ -1,11 +1,6 @@
 ﻿using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Marketplace.Core.Services
 {
@@ -37,7 +32,7 @@ namespace Marketplace.Core.Services
 
         public async Task<Category> GetCategoryById(int id)
         {
-            var category = await _repository.GetById<Category>(id);
+            var category = await _repository.GetByIdAsync<Category>(id);
 
             if (category == null)
                 throw new ArgumentException($"Category with id {id} not found");

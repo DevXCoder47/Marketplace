@@ -12,8 +12,23 @@ namespace Marketplace.Storage.Data
     {
         public MarketplaceContext(DbContextOptions<MarketplaceContext> options) : base(options)
         {
-
         }
+
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Image> Images { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>()
+            .HasMany(t => t.Images)
+            .WithOne(i => i.Product)
+            .HasForeignKey(i => i.ProductId)
+            .IsRequired(false);
+
+            modelBuilder.Entity<Product>()
+            .HasMany(t => t.Categories);
+        }
     }
 }

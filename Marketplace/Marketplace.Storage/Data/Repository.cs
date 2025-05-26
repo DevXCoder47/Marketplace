@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,9 +29,9 @@ namespace Marketplace.Storage.Data
             return entity;
         }
 
-        public async Task Delete<T>(int id) where T : class
+        public async Task Delete<T>(int id) where T : class, IEntity
         {
-            var entity = await GetById<T>(id);
+            var entity = await GetByIdAsync<T>(id);
 
             if (entity == null)
             {
@@ -41,7 +42,8 @@ namespace Marketplace.Storage.Data
             await _MarketplaceContext.SaveChangesAsync();
         }
 
-        public async Task<T?> GetById<T>(int id) where T : class
+        //Для поиска данных из ДБ (результат без связей)
+        public async Task<T?> GetByIdAsync<T>(int id) where T : class, IEntity
         {
             var entity = await _MarketplaceContext.Set<T>().FindAsync(id);
 
@@ -53,9 +55,24 @@ namespace Marketplace.Storage.Data
             return entity;
         }
 
-        public async Task<T> Update<T>(T entity, int id) where T : class
+        //Для поиска данных из ДБ (результат со связями)
+        public IQueryable<T> GetByIdQueryable<T>(int id) where T : class, IEntity
         {
-            var selectedEntity = await GetById<T>(id);
+            var entity = _MarketplaceContext.
+                Set<T>().
+                Where(t => t.Id == id);
+
+            if (entity == null)
+            {
+                throw new ArgumentException($"Entity with ID: {id} not found.");
+            }
+
+            return entity;
+        }
+
+        public async Task<T> Update<T>(T entity, int id) where T : class, IEntity
+        {
+            var selectedEntity = await GetByIdAsync<T>(id);
 
             if (selectedEntity == null)
             {
