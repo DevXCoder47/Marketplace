@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Marketplace.Core.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.Models
 {
-    public class Merchant
+    public class Merchant : IEntity
     {
         [Key]
         public int Id { get; set; }
