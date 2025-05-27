@@ -15,6 +15,9 @@ builder.Services.AddDbContext<MarketplaceContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IRepository, Repository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<ICustomListService, CustomListService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

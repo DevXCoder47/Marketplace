@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
 {
+    //https://localhost:7225/
     [Route("api/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -93,7 +94,7 @@ namespace Marketplace.API.Controllers
             }
         }
         #endregion
-        #region Delete methods
+        #region Delete Methods
         [HttpDelete("delete-category/{id}")]
         public async Task<ActionResult<Category>> DeleteCategory([FromRoute] int id)
         {
