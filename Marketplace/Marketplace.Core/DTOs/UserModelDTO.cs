@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Marketplace.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Marketplace.Core.DTOs
         public string Nickname { get; set; } = null!;
         public string? PhoneNumber { get; set; }
         public string? Description { get; set; }
+        public OnlineStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }
