@@ -1,4 +1,5 @@
 ﻿using Marketplace.Core.Helpers;
+using Marketplace.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.Models
 {
-    public class UserModel
+    public class UserModel : IEntity
     {
         public int Id { get; set; }
         public string Nickname { get; set; } = null!;
