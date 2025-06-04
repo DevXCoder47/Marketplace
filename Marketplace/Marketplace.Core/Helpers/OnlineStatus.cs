@@ -10,5 +10,6 @@ namespace Marketplace.Core.Helpers
     {
         Offline,
         Online,
+        Inactive
     }
 }

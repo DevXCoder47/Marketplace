@@ -79,6 +79,7 @@ namespace Marketplace.Core.Services
                 throw new ArgumentException("User credentials aren't valid"); 
             }
             user.CreatedAt = DateTime.UtcNow;
+            user.Status = OnlineStatus.Inactive;
             user.Password = HashManager.HashCreate(user.Password, user.CreatedAt);
             return await _repository.Add(user);
         }
