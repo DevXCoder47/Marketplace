@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.DTOs
 {
-    public class UserSigneUpDTO
+    public class UserSignUpDTO
     {
         public string Nickname { get; set; } = null!;
         public string Password { get; set; } = null!;
