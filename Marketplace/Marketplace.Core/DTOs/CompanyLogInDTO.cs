@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.DTOs
 {
-    public class CompanyLogInDTO
+    public class CompanyLoginDTO
     {
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
