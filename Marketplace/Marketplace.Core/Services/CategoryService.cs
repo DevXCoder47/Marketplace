@@ -25,12 +25,12 @@ namespace Marketplace.Core.Services
             return await _repository.Add(category); 
         }
 
-        public async Task DeleteCategory(int id)
+        public async Task DeleteCategory(string id)
         {
             await _repository.Delete<Category>(id);
         }
 
-        public async Task<Category> GetCategoryById(int id)
+        public async Task<Category> GetCategoryById(string id)
         {
             var category = await _repository.GetByIdAsync<Category>(id);
 
@@ -40,7 +40,7 @@ namespace Marketplace.Core.Services
             return category;
         }
 
-        public async Task<Category> UpdateCategory(int id, Category category)
+        public async Task<Category> UpdateCategory(string id, Category category)
         {
             return await _repository.Update(category, id);
         }

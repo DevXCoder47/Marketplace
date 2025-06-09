@@ -3,10 +3,10 @@ using Marketplace.Core.Interfaces;
 
 namespace Marketplace.Core.Models
 {
-    public class Category : IEntity
+    public class Category : IEntity<string>
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(100)]

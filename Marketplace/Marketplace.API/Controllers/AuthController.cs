@@ -3,6 +3,7 @@ using Marketplace.Core.DTOs;
 using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -14,10 +15,15 @@ namespace Marketplace.API.Controllers
     {
         private readonly IAuthService _service;
         private readonly IMapper _mapper;
-        public AuthController(IAuthService service, IMapper mapper)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public AuthController(IAuthService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _mapper = mapper;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         #region Get Methods
         [HttpGet("all")]
@@ -35,7 +41,7 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public async Task<ActionResult<UserModelDTO>> GetUserbyId([FromRoute] int id)
+        public async Task<ActionResult<UserModelDTO>> GetUserbyId([FromRoute] string id)
         {
             try
             {
@@ -91,7 +97,7 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpPatch("logout/{id}")]
-        public async Task<ActionResult> LogOutUser([FromRoute] int id)
+        public async Task<ActionResult> LogOutUser([FromRoute] string id)
         {
             try
             {

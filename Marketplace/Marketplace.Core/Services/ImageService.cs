@@ -26,14 +26,14 @@ namespace Marketplace.Core.Services
                 throw new ArgumentException("Invalid image build");  // TODO own types of exceptions
             return _repository.Add(image);
         }
-        public async Task<Image> GetImageById(int id)
+        public async Task<Image> GetImageById(string id)
         {
             var image = await _repository.GetByIdAsync<Image>(id);
             if (image == null)
                 throw new ArgumentException("Image not found");    // TODO own types of exceptions
             return image;
         }
-        public async Task DeleteImage(int id)
+        public async Task DeleteImage(string id)
         {
             await _repository.Delete<Image>(id);
         }

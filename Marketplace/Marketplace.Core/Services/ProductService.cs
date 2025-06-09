@@ -19,12 +19,12 @@ namespace Marketplace.Core.Services
             return _repository.Add(product);
         }
 
-        public async Task DeleteProduct(int id)
+        public async Task DeleteProduct(string id)
         {
             await _repository.Delete<Product>(id);
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<Product> GetProductById(string id)
         {
             var product = _repository.GetByIdQueryable<Product>(id).
                 Include(p => p.Images).

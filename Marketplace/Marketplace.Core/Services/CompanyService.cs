@@ -28,7 +28,7 @@ namespace Marketplace.Core.Services
                             .ToListAsync();
         }
 
-        public async Task<Company> GetCompanyById(int id)
+        public async Task<Company> GetCompanyById(string id)
         {
             var company = await _repository.GetByIdAsync<Company>(id);
 
@@ -62,7 +62,7 @@ namespace Marketplace.Core.Services
             return await _repository.Update<Company>(targetCompany, targetCompany.Id);
         }
 
-        public async Task LogOut(int id)
+        public async Task LogOut(string id)
         {
             var targetCompany = await _repository.GetByIdAsync<Company>(id);
 

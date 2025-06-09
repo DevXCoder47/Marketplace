@@ -1,7 +1,7 @@
 ﻿namespace Marketplace.Core.Interfaces
 {
-    public interface IEntity
+    public interface IEntity<TId>
     {
-        public int Id { get; set; }
+        public TId Id { get; set; }
     }
 }

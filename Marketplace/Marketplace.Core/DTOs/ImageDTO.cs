@@ -2,7 +2,7 @@
 {
     public class ImageDTO
     {
-        public int Id { get; set; }
+        public string id { get; set; }
         public string FilePath { get; set; }
         public string AltText { get; set; }
 

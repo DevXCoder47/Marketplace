@@ -6,9 +6,9 @@ namespace Marketplace.Core.Interfaces
     {
         public Task<IEnumerable<Product>> GetProducts(int skip, int take);
         public Task<Product> CreateProduct(Product product);
-        public Task<Product> GetProductById(int id);
+        public Task<Product> GetProductById(string id);
         public Task<Product> GetProductByName(string name);
         public Task<IEnumerable<Product>> GetProductsByName(string name, int skip, int take);
-        public Task DeleteProduct(int id);
+        public Task DeleteProduct(string id);
     }
 }

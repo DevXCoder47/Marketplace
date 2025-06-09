@@ -2,7 +2,7 @@
 {
     public class ProductDTO
     {
-        public int Id { get; set; }
+        public string id { get; set; }
         public string Name { get; set; }
         public string? Descriprtion { get; set; }
         public float? Rating { get; set; }

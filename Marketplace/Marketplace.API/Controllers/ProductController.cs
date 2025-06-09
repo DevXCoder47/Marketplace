@@ -3,6 +3,7 @@ using Marketplace.Core.Interfaces;
 using Marketplace.Core.DTOs;
 using Marketplace.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace Marketplace.API.Controllers
 {
@@ -12,10 +13,15 @@ namespace Marketplace.API.Controllers
     {
         private readonly IProductService _service;
         private readonly IMapper _mapper;
-        public ProductController(IProductService service, IMapper mapper)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public ProductController(IProductService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _mapper = mapper;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         [HttpGet("GetProducts")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts([FromQuery] int skip = 0, [FromQuery] int take = 10)
@@ -31,7 +37,7 @@ namespace Marketplace.API.Controllers
             }
         }
         [HttpGet("GetProductById{id}")]
-        public async Task<ActionResult<ProductDTO>> GetProductById([FromRoute] int id)
+        public async Task<ActionResult<ProductDTO>> GetProductById([FromRoute] string id)
         {
             try
             {
@@ -80,7 +86,7 @@ namespace Marketplace.API.Controllers
             }
         }
         [HttpDelete("DeleteProduct{id}")]
-        public async Task<ActionResult<ProductDTO>> DeleteProduct([FromRoute] int id)
+        public async Task<ActionResult<ProductDTO>> DeleteProduct([FromRoute] string id)
         {
             try
             {

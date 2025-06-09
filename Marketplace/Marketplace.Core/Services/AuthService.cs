@@ -19,7 +19,7 @@ namespace Marketplace.Core.Services
         {
             _repository = repository;
         }
-        public async Task<UserModel> GetUserById(int id)
+        public async Task<UserModel> GetUserById(string id)
         {
             var user = await _repository.GetByIdAsync<UserModel>(id);
 
@@ -61,7 +61,7 @@ namespace Marketplace.Core.Services
             return await _repository.Update<UserModel>(targetUser, targetUser.Id);
         }
 
-        public async Task LogOut(int id)
+        public async Task LogOut(string id)
         {
             var targetUser = await _repository.GetByIdAsync<UserModel>(id);
 

@@ -3,6 +3,7 @@ using Marketplace.Core.DTOs;
 using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -14,10 +15,15 @@ namespace Marketplace.API.Controllers
     {
         private readonly IMerchantService _service;
         private readonly IMapper _mapper;
-        public MerchantController(IMerchantService service, IMapper mapper)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public MerchantController(IMerchantService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _mapper = mapper;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         #region Get Methods
         [HttpGet]
@@ -34,7 +40,7 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public async Task<ActionResult<Merchant>> GetMerchantById([FromRoute] int id)
+        public async Task<ActionResult<Merchant>> GetMerchantById([FromRoute] string id)
         {
             try
             {
@@ -75,7 +81,7 @@ namespace Marketplace.API.Controllers
         #endregion
         #region Put Methods
         [HttpPut("update-merchant/{id}")]
-        public async Task<ActionResult<Merchant>> UpdateMerchant([FromRoute] int id, [FromBody] CreateMerchantDTO dto)
+        public async Task<ActionResult<Merchant>> UpdateMerchant([FromRoute] string id, [FromBody] CreateMerchantDTO dto)
         {
             try
             {
@@ -91,7 +97,7 @@ namespace Marketplace.API.Controllers
         #endregion
         #region Delete Methods
         [HttpDelete("delete-merchant/{id}")]
-        public async Task<ActionResult<Merchant>> DeleteMerchant([FromRoute] int id)
+        public async Task<ActionResult<Merchant>> DeleteMerchant([FromRoute] string id)
         {
             try
             {

@@ -3,6 +3,8 @@ using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Marketplace.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Marketplace.API.Controllers
 {
@@ -12,11 +14,17 @@ namespace Marketplace.API.Controllers
     {
         private readonly IImageService _service;
         private readonly IMapper _mapper;
-        public ImageController(IImageService service, IMapper mapper)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public ImageController(IImageService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _mapper = mapper;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
+        [AllowAnonymous]
         [HttpGet("GetImages")]
         public async Task<ActionResult<IEnumerable<ImageDTO>>> GetImages([FromQuery] int skip = 0, [FromQuery] int take = 10)
         {
@@ -31,7 +39,7 @@ namespace Marketplace.API.Controllers
             }
         }
         [HttpGet("GetImageById{id}")]
-        public async Task<ActionResult<ImageDTO>> GetImageById([FromRoute] int id)
+        public async Task<ActionResult<ImageDTO>> GetImageById([FromRoute] string id)
         {
             try
             {
@@ -42,6 +50,7 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Roles = "Manager,Admin")]
         [HttpPost("AddImage")]
         public async Task<ActionResult<ImageDTO>> AddImage([FromBody] AddImageDTO addImageDto)
         {
@@ -55,7 +64,7 @@ namespace Marketplace.API.Controllers
             }
         }
         [HttpDelete("DeleteImage{id}")]
-        public async Task<ActionResult<ImageDTO>> DeleteImage([FromRoute] int id)
+        public async Task<ActionResult<ImageDTO>> DeleteImage([FromRoute] string id)
         {
             try
             {

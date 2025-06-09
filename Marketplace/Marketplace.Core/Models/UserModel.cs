@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.Models
 {
-    public class UserModel : IEntity
+    public class UserModel : IEntity<string>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Nickname { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string? PhoneNumber { get; set; }
         public string? Description { get; set; }
-        public OnlineStatus Status { get; set; }
+        //public OnlineStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

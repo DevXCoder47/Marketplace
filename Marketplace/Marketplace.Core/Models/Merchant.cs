@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.Models
 {
-    public class Merchant : IEntity
+    public class Merchant : IEntity<string>
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required]
         [MaxLength(100)]
         public string Name { get; set; } = null!;

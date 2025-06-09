@@ -29,7 +29,7 @@ namespace Marketplace.Storage.Data
             return entity;
         }
 
-        public async Task Delete<T>(int id) where T : class, IEntity
+        public async Task Delete<T>(string id) where T : class, IEntity<string>
         {
             var entity = await GetByIdAsync<T>(id);
 
@@ -43,7 +43,7 @@ namespace Marketplace.Storage.Data
         }
 
         //Для поиска данных из ДБ (результат без связей)
-        public async Task<T?> GetByIdAsync<T>(int id) where T : class, IEntity
+        public async Task<T?> GetByIdAsync<T>(string id) where T : class, IEntity<string>
         {
             var entity = await _MarketplaceContext.Set<T>().FindAsync(id);
 
@@ -56,7 +56,7 @@ namespace Marketplace.Storage.Data
         }
 
         //Для поиска данных из ДБ (результат со связями)
-        public IQueryable<T> GetByIdQueryable<T>(int id) where T : class, IEntity
+        public IQueryable<T> GetByIdQueryable<T>(string id) where T : class, IEntity<string>
         {
             var entity = _MarketplaceContext.
                 Set<T>().
@@ -70,7 +70,7 @@ namespace Marketplace.Storage.Data
             return entity;
         }
 
-        public async Task<T> Update<T>(T entity, int id) where T : class, IEntity
+        public async Task<T> Update<T>(T entity, string id) where T : class, IEntity<string>
         {
             var selectedEntity = await GetByIdAsync<T>(id);
 

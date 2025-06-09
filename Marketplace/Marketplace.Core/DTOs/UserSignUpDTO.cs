@@ -9,6 +9,7 @@ namespace Marketplace.Core.DTOs
     public class UserSignUpDTO
     {
         public string Nickname { get; set; } = null!;
+        public string Email { get; set; }
         public string Password { get; set; } = null!;
         public string? PhoneNumber { get; set; }
         public string? Description { get; set; }

@@ -26,7 +26,7 @@ namespace Marketplace.Core.Services
                 ToListAsync();
         }
 
-        public async Task<Merchant> GetMerchantById(int id)
+        public async Task<Merchant> GetMerchantById(string id)
         {
             var merchant = await _repository.GetByIdQueryable<Merchant>(id).
                 Include(m => m.Products).
@@ -55,12 +55,12 @@ namespace Marketplace.Core.Services
             return await _repository.Add(merchant);
         }
 
-        public async Task DeleteMerchant(int id)
+        public async Task DeleteMerchant(string id)
         {
             await _repository.Delete<Merchant>(id);
         }
 
-        public async Task<Merchant> UpdateMerchant(int id, Merchant merchant)
+        public async Task<Merchant> UpdateMerchant(string id, Merchant merchant)
         {
             return await _repository.Update(merchant, id);
         }

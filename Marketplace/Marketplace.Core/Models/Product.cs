@@ -3,10 +3,10 @@ using Marketplace.Core.Interfaces;
 
 namespace Marketplace.Core.Models
 {
-    public class Product : IEntity
+    public class Product : IEntity<string>
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string? Descriprtion { get; set; }
         public float? Rating { get; set; }

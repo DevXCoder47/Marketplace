@@ -2,6 +2,7 @@
 using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -12,10 +13,14 @@ namespace Marketplace.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _service;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public CategoryController (ICategoryService _service)
+        public CategoryController (ICategoryService _service, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this._service = _service;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
         #region Get Methods
         [HttpGet]
@@ -32,7 +37,7 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet("id/{id}")]
-        public async Task<ActionResult<Category>> GetCategoryById([FromRoute] int id)
+        public async Task<ActionResult<Category>> GetCategoryById([FromRoute] string id)
         {
             try
             {
@@ -77,7 +82,7 @@ namespace Marketplace.API.Controllers
         #endregion
         #region Put Methods
         [HttpPut("update-category/{id}")]
-        public async Task<ActionResult<Category>> UpdateCategory([FromRoute] int id, [FromBody] CategoryDTO categoryDto)
+        public async Task<ActionResult<Category>> UpdateCategory([FromRoute] string id, [FromBody] CategoryDTO categoryDto)
         {
             try
             {
@@ -96,7 +101,7 @@ namespace Marketplace.API.Controllers
         #endregion
         #region Delete Methods
         [HttpDelete("delete-category/{id}")]
-        public async Task<ActionResult<Category>> DeleteCategory([FromRoute] int id)
+        public async Task<ActionResult<Category>> DeleteCategory([FromRoute] string id)
         {
             try
             {
