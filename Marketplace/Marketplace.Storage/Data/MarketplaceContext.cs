@@ -22,6 +22,8 @@ namespace Marketplace.Storage.Data
         public DbSet<Image> Images { get; set; }
         public DbSet<Merchant> Merchants { get; set; }
 
+        public DbSet<Merchant> Companies { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
