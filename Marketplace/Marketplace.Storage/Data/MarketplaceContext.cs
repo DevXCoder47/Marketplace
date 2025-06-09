@@ -59,7 +59,7 @@ namespace Marketplace.Storage.Data
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Nickname = "SuperAdmin",
                 Description = "Главный администратор системы",
-                Status = ApplicationUser.OnlineStatus.Online,
+                Status = OnlineStatus.Online,
                 CreatedAt = DateTime.UtcNow
             };
 

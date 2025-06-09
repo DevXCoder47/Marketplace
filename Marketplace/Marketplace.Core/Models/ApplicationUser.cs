@@ -1,4 +1,5 @@
-﻿using Marketplace.Core.Interfaces;
+﻿using Marketplace.Core.Helpers;
+using Marketplace.Core.Interfaces;
 using Microsoft.AspNetCore.Identity; // Необходимо для IdentityUser
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -23,12 +24,5 @@ namespace Marketplace.Core.Models
 
         // Вы можете добавить другие поля, специфичные для вашего Marketplace, например:
         public string? ProfilePictureUrl { get; set; }
-
-        public enum OnlineStatus
-        {
-            Offline,
-            Online,
-            Inactive,
-        }
     }
 }
