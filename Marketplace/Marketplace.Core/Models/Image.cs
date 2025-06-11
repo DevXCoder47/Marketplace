@@ -11,7 +11,7 @@ namespace Marketplace.Core.Models
         public string FilePath { get; set; }
         public string AltText { get; set; }
         [ForeignKey(nameof(Product))]
-        public int? ProductId { get; set; }
+        public string? ProductId { get; set; }
         public Product Product { get; set; }
     }
 }
