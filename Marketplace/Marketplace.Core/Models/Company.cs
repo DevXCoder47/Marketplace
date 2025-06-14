@@ -10,7 +10,7 @@ namespace Marketplace.Core.Models
 {
     public class Company : IEntity<string>
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = "";
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string TaxNumber { get; set; } = null!;

@@ -10,7 +10,7 @@ namespace Marketplace.Core.Models
 {
     public class UserModel : IEntity<string>
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = "";
         public string Nickname { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string? PhoneNumber { get; set; }

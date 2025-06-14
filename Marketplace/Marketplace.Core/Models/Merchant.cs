@@ -11,7 +11,7 @@ namespace Marketplace.Core.Models
     public class Merchant : IEntity<string>
     {
         [Key]
-        public string Id { get; set; }
+        public string Id { get; set; } = "";
         [Required]
         [MaxLength(100)]
         public string Name { get; set; } = null!;

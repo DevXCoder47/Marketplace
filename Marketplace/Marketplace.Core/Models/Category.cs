@@ -6,7 +6,7 @@ namespace Marketplace.Core.Models
     public class Category : IEntity<string>
     {
         [Key]
-        public string Id { get; set; }
+        public string Id { get; set; } = "";
 
         [Required]
         [MaxLength(100)]

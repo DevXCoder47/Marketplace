@@ -7,7 +7,7 @@ namespace Marketplace.Core.Models
     public class Image : IEntity<string>
     {
         [Key]
-        public string Id { get; set; }
+        public string Id { get; set; } = "";
         public string FilePath { get; set; }
         public string AltText { get; set; }
         [ForeignKey(nameof(Product))]
