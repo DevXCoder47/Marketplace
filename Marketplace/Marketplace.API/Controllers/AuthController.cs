@@ -1,114 +1,110 @@
-﻿using AutoMapper;
+﻿using Marketplace.Core.Models;
 using Marketplace.Core.DTOs;
-using Marketplace.Core.Interfaces;
-using Marketplace.Core.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Marketplace.API.Controllers
 {
-    //https://localhost:7225/
     [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _service;
-        private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
-            _service = service;
-            _mapper = mapper;
             _userManager = userManager;
             _roleManager = roleManager;
-        }
-        #region Get Methods
-        [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<UserModelDTO>>> GetAllUsers([FromQuery] int skip = 0, [FromQuery] int take = 10)
-        {
-            try
-            {
-                var users = await _service.GetUsers(skip, take);
-                return Ok(users.Select(_mapper.Map<UserModelDTO>));
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _configuration = configuration;
         }
 
-        [HttpGet("id/{id}")]
-        public async Task<ActionResult<UserModelDTO>> GetUserbyId([FromRoute] string id)
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDTO dto)
         {
-            try
+            if (!await _roleManager.RoleExistsAsync(dto.Role))
+                await _roleManager.CreateAsync(new IdentityRole(dto.Role));
+
+            var user = new ApplicationUser
             {
-                return Ok(_mapper.Map<UserModelDTO>(await _service.GetUserById(id)));
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+                UserName = dto.Email,
+                Email = dto.Email,
+                Nickname = dto.Nickname
+            };
+
+            var result = await _userManager.CreateAsync(user, dto.Password);
+
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            await _userManager.AddToRoleAsync(user, dto.Role);
+
+            return Ok(new { message = $"User registered as {dto.Role}" });
         }
 
-        [HttpGet("name/{name}")]
-        public async Task<ActionResult<UserModelDTO>> GetUserbyName([FromRoute] string name)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDTO dto)
         {
-            try
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+                return Unauthorized();
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var authClaims = new List<Claim>
             {
-                return Ok(_mapper.Map<UserModelDTO>(await _service.GetUserByName(name)));
-            }
-            catch (ArgumentException ex)
+                new Claim(ClaimTypes.Name, user.UserName!),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            authClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                expires: DateTime.Now.AddHours(3),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+            );
+
+            return Ok(new
             {
-                return BadRequest(ex.Message);
-            }
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo
+            });
         }
 
-        #endregion
-        #region Post Methods
-        [HttpPost("create-user")]
-        public async Task<ActionResult<UserModelDTO>> CreateUser([FromBody] UserSignUpDTO dto)
+        [HttpPost("init-roles")]
+        public async Task<IActionResult> InitRoles()
         {
-            try
+            string[] roles = { "admin", "merchant", "client" };
+
+            foreach (var role in roles)
             {
-                var createdUser = await _service.SignUp(_mapper.Map<UserModel>(dto));
-                return Ok(_mapper.Map<UserModelDTO>(dto));
+                if (!await _roleManager.RoleExistsAsync(role))
+                    await _roleManager.CreateAsync(new IdentityRole(role));
             }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        #endregion
-        #region Patch Methods
-        [HttpPatch("login")]
-        public async Task<ActionResult<UserModelDTO>> LogInUser([FromBody] UserLoginDTO loginInfo)
-        {
-            try
-            {
-                return Ok(_mapper.Map<UserModelDTO>(await _service.LogIn(loginInfo.Nickname, loginInfo.Password)));
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            return Ok("Roles initialized");
         }
 
-        [HttpPatch("logout/{id}")]
-        public async Task<ActionResult> LogOutUser([FromRoute] string id)
+        [HttpGet("me")]
+        [Authorize]
+        public IActionResult Me()
         {
-            try
-            {
-                await _service.LogOut(id);
-                return Ok();
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var username = User.Identity!.Name;
+            var roles = User.Claims
+                            .Where(c => c.Type == ClaimTypes.Role)
+                            .Select(c => c.Value);
+
+            return Ok(new { username, roles });
         }
-        #endregion
     }
 }

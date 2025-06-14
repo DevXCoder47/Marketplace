@@ -26,6 +26,7 @@ namespace Marketplace.Storage.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Product>()
             .HasMany(t => t.Images)
             .WithOne(i => i.Product)
@@ -35,16 +36,17 @@ namespace Marketplace.Storage.Data
             modelBuilder.Entity<Product>()
             .HasMany(t => t.Categories);
 
+            
             // Всегда вызывайте базовый метод OnModelCreating!
-            //base.OnModelCreating(modelBuilder);
+            
 
-            //// --- Заполнение начальных данных для ролей (Seed Data) ---
-            //// Это добавит предопределенные роли в вашу базу данных при первой миграции.
-            //modelBuilder.Entity<IdentityRole>().HasData(
-            //    new IdentityRole { Id = "client-role-id", Name = "Client", NormalizedName = "CLIENT" },
-            //    new IdentityRole { Id = "manager-role-id", Name = "Manager", NormalizedName = "MANAGER" },
-            //    new IdentityRole { Id = "admin-role-id", Name = "Admin", NormalizedName = "ADMIN" }
-            //);
+            // --- Заполнение начальных данных для ролей (Seed Data) ---
+            // Это добавит предопределенные роли в вашу базу данных при первой миграции.
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = "client-role-id", Name = "Client", NormalizedName = "CLIENT" },
+                new IdentityRole { Id = "manager-role-id", Name = "Manager", NormalizedName = "MANAGER" },
+                new IdentityRole { Id = "admin-role-id", Name = "Admin", NormalizedName = "ADMIN" }
+            );
 
             // --- Заполнение начальных данных для тестового администратора (ТОЛЬКО ДЛЯ РАЗРАБОТКИ!) ---
             // Это создаст тестового пользователя с паролем, которого вы сможете использовать для входа.
