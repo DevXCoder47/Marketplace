@@ -12,10 +12,10 @@ using System.Xml.Linq;
 
 namespace Marketplace.Core.Services
 {
-    public class AuthService : IAuthService
+    public class UserService : IUserService
     {
         private readonly IRepository _repository;
-        public AuthService(IRepository repository)
+        public UserService(IRepository repository)
         {
             _repository = repository;
         }

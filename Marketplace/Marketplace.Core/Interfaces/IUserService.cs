@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Core.Interfaces
 {
-    public interface IAuthService
+    public interface IUserService
     {
         Task<IEnumerable<UserModel>> GetUsers(int skip, int take);
         Task<UserModel> GetUserById(string id);

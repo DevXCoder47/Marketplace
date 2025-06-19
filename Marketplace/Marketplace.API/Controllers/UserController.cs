@@ -13,12 +13,12 @@ namespace Marketplace.API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IAuthService _service;
+        private readonly IUserService _service;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserController(IAuthService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(IUserService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _mapper = mapper;
