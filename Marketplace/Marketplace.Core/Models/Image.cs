@@ -6,8 +6,12 @@ namespace Marketplace.Core.Models
 {
     public class Image : IEntity<string>
     {
+        public Image()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
         [Key]
-        public string Id { get; set; } = "";
+        public string Id { get; set; }
         public string FilePath { get; set; }
         public string AltText { get; set; }
         [ForeignKey(nameof(Product))]
