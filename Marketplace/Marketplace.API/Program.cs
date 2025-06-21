@@ -64,8 +64,6 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICustomListService, CustomListService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IMerchantService, MerchantService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 var app = builder.Build();
 

@@ -23,5 +23,7 @@ namespace Marketplace.Core.Models
         public string Password { get; set; } = null!;
         public OnlineStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public ICollection<ApplicationUser> Users { get; set; }
     }
 }

@@ -20,8 +20,6 @@ namespace Marketplace.Storage.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<Merchant> Merchants { get; set; }
-
         public DbSet<Company> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,9 +34,12 @@ namespace Marketplace.Storage.Data
             modelBuilder.Entity<Product>()
             .HasMany(t => t.Categories);
 
-            
+            modelBuilder.Entity<Company>()
+            .HasMany(c => c.Users);
+
+
             // Всегда вызывайте базовый метод OnModelCreating!
-            
+
 
             // --- Заполнение начальных данных для ролей (Seed Data) ---
             // Это добавит предопределенные роли в вашу базу данных при первой миграции.

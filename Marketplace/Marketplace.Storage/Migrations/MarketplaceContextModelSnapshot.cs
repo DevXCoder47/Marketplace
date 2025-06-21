@@ -30,6 +30,9 @@ namespace Marketplace.Storage.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -92,6 +95,8 @@ namespace Marketplace.Storage.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -186,24 +191,6 @@ namespace Marketplace.Storage.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("Marketplace.Core.Models.Merchant", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Merchants");
-                });
-
             modelBuilder.Entity("Marketplace.Core.Models.Product", b =>
                 {
                     b.Property<string>("Id")
@@ -213,9 +200,6 @@ namespace Marketplace.Storage.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Descriprtion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MerchantId")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -229,8 +213,6 @@ namespace Marketplace.Storage.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MerchantId");
 
                     b.ToTable("Products");
                 });
@@ -387,6 +369,13 @@ namespace Marketplace.Storage.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Marketplace.Core.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Marketplace.Core.Models.Company", null)
+                        .WithMany("Users")
+                        .HasForeignKey("CompanyId");
+                });
+
             modelBuilder.Entity("Marketplace.Core.Models.Category", b =>
                 {
                     b.HasOne("Marketplace.Core.Models.Product", null)
@@ -401,13 +390,6 @@ namespace Marketplace.Storage.Migrations
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Marketplace.Core.Models.Product", b =>
-                {
-                    b.HasOne("Marketplace.Core.Models.Merchant", null)
-                        .WithMany("Products")
-                        .HasForeignKey("MerchantId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -461,9 +443,9 @@ namespace Marketplace.Storage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Marketplace.Core.Models.Merchant", b =>
+            modelBuilder.Entity("Marketplace.Core.Models.Company", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Marketplace.Core.Models.Product", b =>

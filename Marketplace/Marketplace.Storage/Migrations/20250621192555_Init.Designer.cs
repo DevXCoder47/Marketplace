@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Marketplace.Storage.Migrations
 {
     [DbContext(typeof(MarketplaceContext))]
-    [Migration("20250609195758_Init")]
+    [Migration("20250621192555_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -32,6 +32,9 @@ namespace Marketplace.Storage.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -96,6 +99,8 @@ namespace Marketplace.Storage.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -104,28 +109,6 @@ namespace Marketplace.Storage.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "978ad6d1-c88a-4af8-88bb-9eb9473dd4b8",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "b8160920-6d72-4453-9608-daac3232b242",
-                            CreatedAt = new DateTime(2025, 6, 9, 19, 57, 57, 669, DateTimeKind.Utc).AddTicks(2023),
-                            Description = "Главный администратор системы",
-                            Email = "admin@yourmarketplace.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            Nickname = "SuperAdmin",
-                            NormalizedEmail = "ADMIN@YOURMARKETPLACE.COM",
-                            NormalizedUserName = "ADMIN@YOURMARKETPLACE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENJbSO7gV0lO1Hm8wsIOahXsJhNrwk+3efw0baVcbvvJtrzB3FBp1cf6FRUele1b5Q==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "2731ddd4-4998-4c89-897b-672a50d10096",
-                            Status = 1,
-                            TwoFactorEnabled = false,
-                            UserName = "admin@yourmarketplace.com"
-                        });
                 });
 
             modelBuilder.Entity("Marketplace.Core.Models.Category", b =>
@@ -146,6 +129,46 @@ namespace Marketplace.Storage.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Marketplace.Core.Models.Company", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RegNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TaxNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("Marketplace.Core.Models.Image", b =>
@@ -171,24 +194,6 @@ namespace Marketplace.Storage.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("Marketplace.Core.Models.Merchant", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Merchant");
-                });
-
             modelBuilder.Entity("Marketplace.Core.Models.Product", b =>
                 {
                     b.Property<string>("Id")
@@ -198,9 +203,6 @@ namespace Marketplace.Storage.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Descriprtion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MerchantId")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -214,8 +216,6 @@ namespace Marketplace.Storage.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MerchantId");
 
                     b.ToTable("Products");
                 });
@@ -351,18 +351,6 @@ namespace Marketplace.Storage.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "978ad6d1-c88a-4af8-88bb-9eb9473dd4b8",
-                            RoleId = "admin-role-id"
-                        },
-                        new
-                        {
-                            UserId = "978ad6d1-c88a-4af8-88bb-9eb9473dd4b8",
-                            RoleId = "manager-role-id"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -384,6 +372,13 @@ namespace Marketplace.Storage.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Marketplace.Core.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Marketplace.Core.Models.Company", null)
+                        .WithMany("Users")
+                        .HasForeignKey("CompanyId");
+                });
+
             modelBuilder.Entity("Marketplace.Core.Models.Category", b =>
                 {
                     b.HasOne("Marketplace.Core.Models.Product", null)
@@ -398,13 +393,6 @@ namespace Marketplace.Storage.Migrations
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Marketplace.Core.Models.Product", b =>
-                {
-                    b.HasOne("Marketplace.Core.Models.Merchant", null)
-                        .WithMany("Products")
-                        .HasForeignKey("MerchantId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -458,9 +446,9 @@ namespace Marketplace.Storage.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Marketplace.Core.Models.Merchant", b =>
+            modelBuilder.Entity("Marketplace.Core.Models.Company", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Marketplace.Core.Models.Product", b =>
