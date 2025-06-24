@@ -13,8 +13,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Marketplace.API.csproj", "Marketplace.API/"]
+COPY ["Marketplace.Core/Marketplace.Core.csproj", "Marketplace.Core/"]
 COPY ["Marketplace.Storage/Marketplace.Storage.csproj", "Marketplace.Storage/"]
-COPY ["Marketplace.Core.csproj", "Marketplace.Core/"]
 RUN dotnet restore "./Marketplace/Marketplace.API/Marketplace.API.csproj"
 COPY . .
 WORKDIR "/src/Marketplace/Marketplace.API"
