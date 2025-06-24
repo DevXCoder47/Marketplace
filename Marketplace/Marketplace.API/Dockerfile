@@ -15,8 +15,7 @@ WORKDIR /src
 COPY ["Marketplace.API/Marketplace.API.csproj", "Marketplace.API/"]
 #COPY ["Marketplace.Storage/Marketplace.Storage.csproj", "Marketplace.Storage/"]
 #COPY ["Marketplace.Core/Marketplace.Core.csproj", "Marketplace.Core/"]
-COPY ../Marketplace.Storage/Marketplace.Storage.csproj ../Marketplace.Storage/
-COPY ../Marketplace.Core/Marketplace.Core.csproj ../Marketplace.Core/
+
 RUN dotnet restore "./Marketplace.API/Marketplace.API.csproj"
 COPY . .
 WORKDIR "/src/Marketplace.API"
