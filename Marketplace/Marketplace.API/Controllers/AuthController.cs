@@ -84,7 +84,7 @@ namespace Marketplace.API.Controllers
         [HttpPost("init-roles")]
         public async Task<IActionResult> InitRoles()
         {
-            string[] roles = { "admin", "merchant", "client" };
+            string[] roles = { "admin", "merchant", "client", "owner" };
 
             foreach (var role in roles)
             {
