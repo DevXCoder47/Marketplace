@@ -12,9 +12,9 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Marketplace.API/Marketplace.API.csproj", "Marketplace.API/"]
-COPY ["./Marketplace/Marketplace.Storage/Marketplace.Storage.csproj", "./Marketplace/Marketplace.Storage/"]
-COPY ["./Marketplace/Marketplace.Core/Marketplace.Core.csproj", "./Marketplace/Marketplace.Core/"]
+COPY ["Marketplace.API.csproj", "Marketplace.API/"]
+COPY ["Marketplace.Storage/Marketplace.Storage.csproj", "Marketplace.Storage/"]
+COPY ["Marketplace.Core/Marketplace.Core.csproj", "Marketplace.Core/"]
 RUN dotnet restore "./Marketplace/Marketplace.API/Marketplace.API.csproj"
 COPY . .
 WORKDIR "/src/Marketplace/Marketplace.API"
