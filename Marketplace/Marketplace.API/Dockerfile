@@ -14,8 +14,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Marketplace.API.csproj", "Marketplace.API/"]
 COPY ["Marketplace.Storage/Marketplace.Storage.csproj", "Marketplace.Storage/"]
-COPY ["Marketplace.Core/Marketplace.Core.csproj", "Marketplace.Core/"]
-RUN dotnet restore "Marketplace.API/Marketplace.API.csproj"
+COPY ["././Marketplace.Core/Marketplace.Core.csproj", "Marketplace.Core/"]
+RUN dotnet restore "./Marketplace/Marketplace.API/Marketplace.API.csproj"
 COPY . .
 WORKDIR "/src/Marketplace/Marketplace.API"
 RUN dotnet build "./Marketplace.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
