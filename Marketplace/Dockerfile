@@ -12,12 +12,12 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Marketplace.API/Marketplace.API.csproj", "Marketplace.API/"]
-COPY ["Marketplace.Storage/Marketplace.Storage.csproj", "Marketplace.Storage/"]
+COPY ["Marketplace.API.csproj", "Marketplace.API/"]
 COPY ["Marketplace.Core/Marketplace.Core.csproj", "Marketplace.Core/"]
-RUN dotnet restore "./Marketplace.API/Marketplace.API.csproj"
+COPY ["Marketplace.Storage.csproj", "Marketplace.Storage/"]
+RUN dotnet restore "./Marketplace/Marketplace.API/Marketplace.API.csproj"
 COPY . .
-WORKDIR "/src/Marketplace.API"
+WORKDIR "/src/Marketplace/Marketplace.API"
 RUN dotnet build "./Marketplace.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
