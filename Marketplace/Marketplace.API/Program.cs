@@ -97,6 +97,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICustomListService, CustomListService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
