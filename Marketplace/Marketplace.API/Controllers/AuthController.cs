@@ -69,7 +69,7 @@ namespace Marketplace.API.Controllers
                 if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
                     return Unauthorized("Invalid credentials");
 
-                user.Status = Core.Helpers.OnlineStatus.Online;
+                //СДЕЛАТЬ АУС СЕРВИС!!!!user.Status = Core.Helpers.OnlineStatus.Online;
 
                 var jwtToken = await _tokenService.GenerateJwtTokenAsync(user);
                 var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
