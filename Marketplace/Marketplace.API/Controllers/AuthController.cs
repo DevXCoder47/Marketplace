@@ -87,6 +87,13 @@ namespace Marketplace.API.Controllers
         }
 
         [Authorize]
+        [HttpPost("logout")]
+        public async Task Logout()
+        {
+            return;
+        }
+
+        [Authorize]
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequestDTO request)
         {

@@ -1,8 +1,10 @@
-﻿namespace Marketplace.Core.Models
+﻿using Marketplace.Core.Interfaces;
+
+namespace Marketplace.Core.Models
 {
-    public class RefreshToken
+    public class RefreshToken : IEntity<string>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Token { get; set; }
         public DateTime Expires { get; set; }
         public bool IsRevoked { get; set; }

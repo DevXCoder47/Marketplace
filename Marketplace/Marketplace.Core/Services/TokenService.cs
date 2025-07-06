@@ -78,4 +78,10 @@ public class TokenService : ITokenService
 
         return (newJwt, newRefresh);
     }
+
+    public async Task LogoutWithTokensAsync (string id)
+    {
+        var user = await _repository.GetByIdAsync<RefreshToken>(id);
+
+    }
 }
