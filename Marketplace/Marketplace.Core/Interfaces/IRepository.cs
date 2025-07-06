@@ -10,5 +10,6 @@ namespace Marketplace.Core.Interfaces
         public Task<T?> GetByIdAsync<T>(string id) where T : class, IEntity<string>;
         IQueryable<T> GetByIdQueryable<T>(string id) where T : class, IEntity<string>;
         public Task Delete<T>(string id) where T : class, IEntity<string>;
+        public Task<int> SaveChangesAsync();
     }
 }

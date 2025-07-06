@@ -83,5 +83,10 @@ namespace Marketplace.Storage.Data
             await _MarketplaceContext.SaveChangesAsync();
             return entity;
         }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return _MarketplaceContext.SaveChangesAsync();
+        }
     }
 }

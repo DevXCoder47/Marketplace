@@ -7,6 +7,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Marketplace.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.Controllers
 {
@@ -18,12 +20,15 @@ namespace Marketplace.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly ITokenService _tokenService;
+        private readonly IRepository _repository;
 
-        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ITokenService tokenService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _tokenService = tokenService;
         }
 
         [AllowAnonymous]
@@ -56,43 +61,41 @@ namespace Marketplace.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO dto)
+        public async Task<IActionResult> Login([FromBody]LoginDTO dto)
         {
             try
             {
                 var user = await _userManager.FindByEmailAsync(dto.Email);
                 if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
-                    return Unauthorized();
+                    return Unauthorized("Invalid credentials");
 
-                var roles = await _userManager.GetRolesAsync(user);
-                var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName!),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+                user.Status = Core.Helpers.OnlineStatus.Online;
 
-                authClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+                var jwtToken = await _tokenService.GenerateJwtTokenAsync(user);
+                var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
 
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-
-                var token = new JwtSecurityToken(
-                    issuer: _configuration["Jwt:Issuer"],
-                    audience: _configuration["Jwt:Audience"],
-                    expires: DateTime.Now.AddHours(3),
-                    claims: authClaims,
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
-
-                return Ok(new
+                return Ok(new AuthResponseDTO
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
+                    Token = jwtToken,
+                    RefreshToken = refreshToken
                 });
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [Authorize]
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequestDTO request)
+        {
+            var result = await _tokenService.RefreshTokenAsync(request);
+            return Ok(new AuthResponseDTO
+            {
+                Token = result.newJwt,
+                RefreshToken = result.newRefresh
+            });
         }
 
         [HttpGet("me")]
