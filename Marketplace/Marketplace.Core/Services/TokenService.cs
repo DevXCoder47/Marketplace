@@ -33,11 +33,11 @@ public class TokenService : ITokenService
         var userRoles = await _userManager.GetRolesAsync(user);
         authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Secret"]!));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 
         var token = new JwtSecurityToken(
-            issuer: _config["Jwt:ValidIssuer"],
-            audience: _config["Jwt:ValidAudience"],
+            issuer: _config["Jwt:Issuer"],
+            audience: _config["Jwt:Audience"],
             expires: DateTime.UtcNow.AddMinutes(15),
             claims: authClaims,
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
@@ -81,14 +81,14 @@ public class TokenService : ITokenService
 
     public async Task LogoutWithTokensAsync (string userId)
     {
-        var token = await _repository.GetAll<RefreshToken>()
+        /*var token = await _repository.GetAll<RefreshToken>()
             .SingleAsync(t => t.UserId.Equals(userId));
 
-        await _repository.Delete<RefreshToken>(token.Id);
+        await _repository.Delete<RefreshToken>(token.Id);*/
 
         var user = await _userManager.FindByIdAsync(userId);
         user.Status = Marketplace.Core.Helpers.OnlineStatus.Offline;
 
-        _repository.SaveChangesAsync();
+        await _repository.SaveChangesAsync();
     }
 }
