@@ -26,7 +26,7 @@ namespace Marketplace.API.Controllers
             _configuration = configuration;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO dto)
         {
@@ -54,7 +54,7 @@ namespace Marketplace.API.Controllers
             }
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO dto)
         {
