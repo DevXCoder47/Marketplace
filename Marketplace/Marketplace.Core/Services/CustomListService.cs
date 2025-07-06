@@ -12,6 +12,21 @@ namespace Marketplace.Core.Services
             _repository = repository;
         }
 
+        public async Task<CustomList> GetUserList(int skip, int take)
+        {
+            var customlist = new CustomList();
+            var temp = await _repository.GetAll<ApplicationUser>().
+                Skip(skip).
+                Take(take).
+                ToListAsync();
+
+            ICollection<object> collection = temp.Cast<object>().ToList();
+            customlist.Results = collection;
+            customlist.Count = collection.Count;
+
+            return customlist;
+        }
+
         public async Task<CustomList> GetImageList(int skip, int take)
         {
             var customlist = new CustomList();

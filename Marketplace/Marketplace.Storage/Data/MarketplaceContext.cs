@@ -43,11 +43,11 @@ namespace Marketplace.Storage.Data
 
             // --- Заполнение начальных данных для ролей (Seed Data) ---
             // Это добавит предопределенные роли в вашу базу данных при первой миграции.
-            modelBuilder.Entity<IdentityRole>().HasData(
+           /* modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "client-role-id", Name = "Client", NormalizedName = "CLIENT" },
                 new IdentityRole { Id = "manager-role-id", Name = "Manager", NormalizedName = "MANAGER" },
                 new IdentityRole { Id = "admin-role-id", Name = "Admin", NormalizedName = "ADMIN" }
-            );
+            );*/
 
             // --- Заполнение начальных данных для тестового администратора (ТОЛЬКО ДЛЯ РАЗРАБОТКИ!) ---
             // Это создаст тестового пользователя с паролем, которого вы сможете использовать для входа.

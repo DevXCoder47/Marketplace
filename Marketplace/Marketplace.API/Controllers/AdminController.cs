@@ -7,8 +7,9 @@ using Marketplace.Core.Models;
 using Marketplace.Core.DTOs; // Ваш ApplicationUser
 
 // Доступ к этому контроллеру только для пользователей с ролями "Admin" или "Manager"
-[Authorize(Roles = "Admin,Manager")]
+[Authorize(Roles = "Admin,Owner")]
 [Route("api/admin")]
+[ApiController]
 public class AdminController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -21,20 +22,42 @@ public class AdminController : ControllerBase
     }
 
     // Пример: Отображение списка всех пользователей и их ролей
-    /*public async Task<IActionResult> Index()
+    [Authorize(Roles = "Admin")]
+    [HttpGet("users")]
+    public async Task<IActionResult> UserList()
     {
-        var users = _userManager.Users.ToList(); // Получаем всех пользователей
-        var userRoles = new Dictionary<string, IList<string>>();
-
-        // Для каждого пользователя получаем его роли
-        foreach (var user in users)
+        try
         {
-            userRoles[user.Id] = await _userManager.GetRolesAsync(user);
-        }
+            var users = _userManager.Users.ToList();
 
-        //ViewBag.UserRoles = userRoles; // Передаем роли в представление
-        //return View(users);
-    }*/
+            var userDtos = new List<UserDataDTO>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+
+                userDtos.Add(new UserDataDTO
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Roles = roles
+                });
+            }
+
+            var result = new CustomList
+            {
+                Count = userDtos.Count,
+                Results = userDtos.Cast<object>().ToList()
+            };
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
     // Пример: Метод для изменения ролей пользователя
     //[HttpGet]

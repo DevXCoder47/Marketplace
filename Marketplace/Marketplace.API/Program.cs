@@ -68,7 +68,7 @@ builder.Services.AddScoped<ICompanyService, CompanyService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment()) ПОТОМ ВЕРНУТЬ
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -87,6 +87,12 @@ app.MapControllers();
 /*app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");*/
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MarketplaceContext>();
+    dbContext.Database.Migrate(); // This applies any pending migrations
+}
 
 app.Run();
 
