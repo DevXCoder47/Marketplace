@@ -79,9 +79,16 @@ public class TokenService : ITokenService
         return (newJwt, newRefresh);
     }
 
-    public async Task LogoutWithTokensAsync (string id)
+    public async Task LogoutWithTokensAsync (string userId)
     {
-        var user = await _repository.GetByIdAsync<RefreshToken>(id);
+        var token = await _repository.GetAll<RefreshToken>()
+            .SingleAsync(t => t.UserId.Equals(userId));
 
+        await _repository.Delete<RefreshToken>(token.Id);
+
+        var user = await _userManager.FindByIdAsync(userId);
+        user.Status = Marketplace.Core.Helpers.OnlineStatus.Offline;
+
+        _repository.SaveChangesAsync();
     }
 }

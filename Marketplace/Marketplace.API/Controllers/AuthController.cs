@@ -87,10 +87,18 @@ namespace Marketplace.API.Controllers
         }
 
         [Authorize]
-        [HttpPost("logout")]
-        public async Task Logout()
+        [HttpPost("logout/{userId}")]
+        public async Task<IActionResult> Logout([FromRoute]string userId)
         {
-            return;
+            try
+            {
+                await _tokenService.LogoutWithTokensAsync(userId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize]
