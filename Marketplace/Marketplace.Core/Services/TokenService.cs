@@ -56,7 +56,7 @@ public class TokenService : ITokenService
             IsRevoked = false
         };
 
-        _repository.Add(refreshToken);
+        await _repository.Add(refreshToken);
         return refreshToken.Token;
     }
     
