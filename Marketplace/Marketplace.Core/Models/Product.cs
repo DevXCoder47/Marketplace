@@ -18,5 +18,6 @@ namespace Marketplace.Core.Models
         public float Price { get; set; }
         public ICollection<Image>? Images { get; set; }
         public ICollection<Category>? Categories { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
     }
 }
