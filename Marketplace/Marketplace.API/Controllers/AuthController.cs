@@ -31,7 +31,7 @@ namespace Marketplace.API.Controllers
             _tokenService = tokenService;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("profile/id/{id}")]
         public async Task<IActionResult> GetUserProfileById(string id)
         {
