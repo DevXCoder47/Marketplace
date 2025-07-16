@@ -1,4 +1,5 @@
-﻿using Marketplace.Core.Interfaces;
+﻿using Marketplace.Core.DTOs;
+using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,39 @@ namespace Marketplace.Core.Services
         public async Task DeleteProduct(string id)
         {
             await _repository.Delete<Product>(id);
+        }
+
+        public async Task<IEnumerable<Product>> GetFilteredProducts(FilterDTO filter, int skip, int take)
+        {
+            var query = _repository.GetAll<Product>()
+                .Include(p => p.Images)
+                .Include(p => p.Categories)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
+                query = query.Where(p => p.Name.Contains(filter.Name));
+            }
+
+            if (!string.IsNullOrEmpty(filter.Descriprtion))
+            {
+                query = query.Where(p => p.Descriprtion != null && p.Descriprtion.Contains(filter.Descriprtion));
+            }
+
+            if (filter.Rating.HasValue)
+            {
+                query = query.Where(p => p.Rating.HasValue && p.Rating.Value >= filter.Rating.Value);
+            }
+
+            if (filter.Price.HasValue)
+            {
+                query = query.Where(p => p.Price <= filter.Price.Value);
+            }
+
+            return await query
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
         }
 
         public async Task<Product> GetProductById(string id)

@@ -24,12 +24,17 @@ namespace Marketplace.API.Controllers
             _roleManager = roleManager;
         }
         [HttpGet("GetProducts")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts([FromQuery] int skip = 0, [FromQuery] int take = 10)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts([FromBody] FilterDTO filter, [FromQuery] int skip = 0, [FromQuery] int take = 10)
         {
             try
             {
-                var Products = await _service.GetProducts(skip, take);
-                return Ok(Products.Select(_mapper.Map<ProductDTO>));
+                if (filter == null)
+                {
+                    var products = await _service.GetProducts(skip, take);
+                    return Ok(Products.Select(_mapper.Map<ProductDTO>));
+                }
+                var products = await _service.GetFilteredProducts(filter, skip, take);
+                return Ok(products.Select(_mapper.Map<ProductDTO>));
             }
             catch (ArgumentException ex)
             {

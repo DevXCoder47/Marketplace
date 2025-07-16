@@ -1,10 +1,12 @@
-﻿using Marketplace.Core.Models;
+﻿using Marketplace.Core.DTOs;
+using Marketplace.Core.Models;
 
 namespace Marketplace.Core.Interfaces
 {
     public interface IProductService
     {
         Task<IEnumerable<Product>> GetProducts(int skip, int take);
+        Task<IEnumerable<Product>> GetFilteredProducts(FilterDTO filter, int skip, int take);
         Task<Product> CreateProduct(Product product);
         Task<Product> GetProductById(string id);
         Task<Product> GetProductByName(string name);
