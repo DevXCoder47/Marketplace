@@ -31,10 +31,10 @@ namespace Marketplace.API.Controllers
                 if (filter == null)
                 {
                     var products = await _service.GetProducts(skip, take);
-                    return Ok(Products.Select(_mapper.Map<ProductDTO>));
+                    return Ok(products.Select(_mapper.Map<ProductDTO>));
                 }
-                var products = await _service.GetFilteredProducts(filter, skip, take);
-                return Ok(products.Select(_mapper.Map<ProductDTO>));
+                var filtereProducts = await _service.GetFilteredProducts(filter, skip, take);
+                return Ok(filtereProducts.Select(_mapper.Map<ProductDTO>));
             }
             catch (ArgumentException ex)
             {
