@@ -75,6 +75,7 @@ namespace Marketplace.API.Controllers
 
                 return Ok(new AuthResponseDTO
                 {
+                    Id = user.Id,
                     Token = jwtToken,
                     RefreshToken = refreshToken
                 });
