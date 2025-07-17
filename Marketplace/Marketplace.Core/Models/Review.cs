@@ -16,7 +16,7 @@ namespace Marketplace.Core.Models
         }
         [Key]
         public string Id { get; set; }
-
+        public int Rating { get; set; }
         [Required]
         public string Text { get; set; } = null!;
     }

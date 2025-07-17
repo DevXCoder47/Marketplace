@@ -55,6 +55,7 @@ namespace Marketplace.API.Controllers
             {
                 var review = new Review()
                 {
+                    Rating = reviewDto.Rating,
                     Text = reviewDto.Text
                 };
                 return Ok(await _service.AddReview(review));
@@ -74,6 +75,7 @@ namespace Marketplace.API.Controllers
                 var review = new Review()
                 {
                     Id = id,
+                    Rating = reviewDto.Rating,
                     Text = reviewDto.Text
                 };
                 return Ok(await _service.UpdateReview(id, review));
