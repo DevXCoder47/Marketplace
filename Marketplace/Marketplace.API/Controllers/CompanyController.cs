@@ -64,12 +64,18 @@ namespace Marketplace.API.Controllers
         {
             try
             {
-                var createdCompany = await _service.SignUp(_mapper.Map<Company>(dto));
-                return Ok(_mapper.Map<CompanyDTO>(dto));
+                var company = _mapper.Map<Company>(dto);
+                var createdCompany = await _service.SignUp(company);
+                return Ok(_mapper.Map<CompanyDTO>(createdCompany));
             }
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Добавьте логирование тут
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
         #endregion
