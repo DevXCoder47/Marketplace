@@ -75,14 +75,25 @@ namespace Marketplace.Core.Services
 
         public async Task<Company> SignUp(Company company)
         {
+            if (company == null) throw new ArgumentNullException(nameof(company));
             if (!await IsCompanyValid(company))
             {
                 throw new ArgumentException("Company's credentials aren't valid");
             }
-            company.CreatedAt = DateTime.UtcNow;
-            company.Status = OnlineStatus.Inactive;
-            company.Password = HashManager.HashCreate(company.Password, company.CreatedAt);
-            return await _repository.Add(company);
+
+            try
+            {
+                company.CreatedAt = DateTime.UtcNow;
+                company.Status = OnlineStatus.Inactive;
+                company.Password = HashManager.HashCreate(company.Password, company.CreatedAt);
+                return await _repository.Add(company);
+            }
+            catch (Exception ex)
+            {
+                // логируйте ошибку, например:
+                Console.WriteLine($"Ошибка при создании компании: {ex.Message}");
+                throw; // пробрасывайте выше, чтобы контроллер отловил
+            }
         }
 
         #region validation logic
