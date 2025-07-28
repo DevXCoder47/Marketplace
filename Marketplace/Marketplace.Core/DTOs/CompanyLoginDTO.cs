@@ -1,4 +1,4 @@
-namespace Marketplace.Core.DTOs
+﻿namespace Marketplace.Core.DTOs
 {
     public class CompanyLoginDTO
     {
