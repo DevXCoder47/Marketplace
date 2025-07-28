@@ -2,13 +2,9 @@
 using Marketplace.Core.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Marketplace.Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.API.Controllers
 {
@@ -18,16 +14,11 @@ namespace Marketplace.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
-        private readonly IRepository _repository;
 
-        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ITokenService tokenService)
+        public AuthController(UserManager<ApplicationUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
-            _configuration = configuration;
             _tokenService = tokenService;
         }
         [AllowAnonymous]

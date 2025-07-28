@@ -1,8 +1,6 @@
 ﻿using Marketplace.Core.DTOs;
-using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,17 +12,12 @@ namespace Marketplace.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
-        private readonly IRepository _repository;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public UserController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
-            _configuration = configuration;
         }
-
+        #region Get Methods
         [AllowAnonymous]
         [HttpGet("profile/id/{id}")]
         public async Task<IActionResult> GetUserProfileById(string id)
@@ -52,5 +45,6 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
     }
 }

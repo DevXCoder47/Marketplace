@@ -3,7 +3,6 @@ using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
 using Marketplace.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Marketplace.API.Controllers
@@ -14,16 +13,13 @@ namespace Marketplace.API.Controllers
     {
         private readonly IImageService _service;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ImageController(IImageService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public ImageController(IImageService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
-            _userManager = userManager;
-            _roleManager = roleManager;
         }
+        #region Get Methods
         [AllowAnonymous]
         [HttpGet("GetImages")]
         public async Task<ActionResult<IEnumerable<ImageDTO>>> GetImages([FromQuery] int skip = 0, [FromQuery] int take = 10)
@@ -38,6 +34,7 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpGet("GetImageById{id}")]
         public async Task<ActionResult<ImageDTO>> GetImageById([FromRoute] string id)
         {
@@ -50,6 +47,8 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+        #region Post Methods
         [Authorize(Roles = "Manager,Admin")]
         [HttpPost("AddImage")]
         public async Task<ActionResult<ImageDTO>> AddImage([FromBody] AddImageDTO addImageDto)
@@ -63,6 +62,8 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+        #region Delete Methods
         [HttpDelete("DeleteImage{id}")]
         public async Task<ActionResult<ImageDTO>> DeleteImage([FromRoute] string id)
         {
@@ -76,5 +77,6 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
     }
 }

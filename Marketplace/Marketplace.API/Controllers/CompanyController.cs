@@ -2,8 +2,6 @@
 using Marketplace.Core.DTOs;
 using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -14,14 +12,10 @@ namespace Marketplace.API.Controllers
     {
         private readonly ICompanyService _service;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public CompanyController(ICompanyService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public CompanyController(ICompanyService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
-            _userManager = userManager;
-            _roleManager = roleManager;
         }
         #region Get Methods
         [HttpGet("all")]

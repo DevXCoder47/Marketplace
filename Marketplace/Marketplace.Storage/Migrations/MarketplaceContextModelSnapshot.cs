@@ -251,6 +251,9 @@ namespace Marketplace.Storage.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("text");
 
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
