@@ -9,6 +9,7 @@ namespace Marketplace.API
         public MappingProfile() 
         {
             CreateMap<Image, ImageDTO>().ReverseMap();
+            CreateMap<ImageDTO, AddImageDTO>().ReverseMap();
             CreateMap<Company, CompanySignUpDTO>().ReverseMap();
             CreateMap<Company, CompanyDTO>().ReverseMap();
             CreateMap<CompanyDTO, CompanySignUpDTO>().ReverseMap();
