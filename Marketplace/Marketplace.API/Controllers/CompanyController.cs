@@ -86,7 +86,7 @@ namespace Marketplace.API.Controllers
         }
         #endregion
         #region Patch Methods
-        [HttpPatch("login")]
+        [HttpPost("login")]
         public async Task<ActionResult<CompanyDTO>> LogInCompany([FromBody] CompanyLoginDTO loginInfo)
         {
             try
@@ -99,7 +99,7 @@ namespace Marketplace.API.Controllers
             }
         }
 
-        [HttpPatch("logout/{id}")]
+        [HttpPost("logout/{id}")]
         public async Task<ActionResult> LogOutCompany([FromRoute] string id)
         {
             try
