@@ -3,7 +3,6 @@ using Marketplace.Core.Interfaces;
 using Marketplace.Core.DTOs;
 using Marketplace.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 
 namespace Marketplace.API.Controllers
 {
@@ -13,16 +12,13 @@ namespace Marketplace.API.Controllers
     {
         private readonly IProductService _service;
         private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ProductController(IProductService service, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public ProductController(IProductService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
-            _userManager = userManager;
-            _roleManager = roleManager;
         }
+        #region Get Methods
         [HttpGet("GetProducts")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts([FromBody] FilterDTO filter, [FromQuery] int skip = 0, [FromQuery] int take = 10)
         {
@@ -78,6 +74,8 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+        #region Post Methods
         [HttpPost("CreateProduct")]
         public async Task<ActionResult<ProductDTO>> CreateProduct([FromBody] CreateProductDTO createProductDto)
         {
@@ -90,6 +88,8 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
+        #region Delete Methods
         [HttpDelete("DeleteProduct{id}")]
         public async Task<ActionResult<ProductDTO>> DeleteProduct([FromRoute] string id)
         {
@@ -103,5 +103,6 @@ namespace Marketplace.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
     }
 }

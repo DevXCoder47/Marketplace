@@ -1,8 +1,6 @@
 ﻿using Marketplace.Core.DTOs;
 using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -13,14 +11,10 @@ namespace Marketplace.API.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _service;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public CategoryController (ICategoryService _service, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public CategoryController (ICategoryService _service)
         {
             this._service = _service;
-            _userManager = userManager;
-            _roleManager = roleManager;
         }
         #region Get Methods
         [HttpGet]

@@ -1,8 +1,6 @@
 ﻿using Marketplace.Core.DTOs;
 using Marketplace.Core.Interfaces;
 using Marketplace.Core.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -12,14 +10,10 @@ namespace Marketplace.API.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly IReviewService _service;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ReviewController(IReviewService _service, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public ReviewController(IReviewService _service)
         {
             this._service = _service;
-            _userManager = userManager;
-            _roleManager = roleManager;
         }
         #region Get Methods
         [HttpGet]

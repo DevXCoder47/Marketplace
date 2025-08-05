@@ -1,6 +1,4 @@
-﻿using Marketplace.Core.Models;
-
-namespace Marketplace.Core.DTOs
+﻿namespace Marketplace.Core.DTOs
 {
     public class UserDataDTO
     {

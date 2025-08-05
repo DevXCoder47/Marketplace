@@ -1,7 +1,6 @@
 ﻿using Marketplace.Core.Helpers;
 using Marketplace.Core.Interfaces;
 using Microsoft.AspNetCore.Identity; // Необходимо для IdentityUser
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Marketplace.Core.Models
