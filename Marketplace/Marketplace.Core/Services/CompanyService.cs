@@ -59,7 +59,7 @@ namespace Marketplace.Core.Services
         {
             var targetCompany = await GetCompanyByEmail(email);
 
-            if (!HashManager.HashCompare(password, targetCompany.CreatedAt, targetCompany.CompanyPassword))
+            if (!HashManager.HashCompare(password, targetCompany.CreatedAt, targetCompany.Password))
             {
                 throw new ArgumentException("Wrong password");
             }
@@ -91,7 +91,7 @@ namespace Marketplace.Core.Services
             {
                 company.CreatedAt = DateTime.UtcNow;
                 company.Status = OnlineStatus.Inactive;
-                company.CompanyPassword = HashManager.HashCreate(company.CompanyPassword, company.CreatedAt);
+                company.Password = HashManager.HashCreate(company.Password, company.CreatedAt);
                 return await _repository.Add(company);
             }
             catch (Exception ex)
@@ -106,17 +106,17 @@ namespace Marketplace.Core.Services
         private async Task<bool> IsEmailUnique(string email)
         {
             var company = await _repository.GetAll<Company>()
-                .SingleOrDefaultAsync(c => c.CompanyEmail.Equals(email));
+                .SingleOrDefaultAsync(c => c.Email.Equals(email));
             return company == null;
         }
         private async Task<bool> IsCompanyValid(Company company)
         {
             // Checks if a string is a valid email
-            var isEmailValid = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").IsMatch(company.CompanyEmail);
+            var isEmailValid = new Regex(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").IsMatch(company.Email);
             // Checks if a string has at least one lower-case latin character, at least one upper-case latin character and at least one digit. The string must be at least 8 characters long
-            var isPasswordValid = new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$").IsMatch(company.CompanyPassword);
+            var isPasswordValid = new Regex(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$").IsMatch(company.Password);
 
-            if (!await IsEmailUnique(company.CompanyEmail))
+            if (!await IsEmailUnique(company.Email))
             {
                 throw new ArgumentException("Email is already claimed");
             }
