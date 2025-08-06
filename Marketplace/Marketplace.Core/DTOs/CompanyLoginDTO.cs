@@ -2,7 +2,7 @@
 {
     public class CompanyLoginDTO
     {
-        public string CompanyEmail { get; set; } = null!;
-        public string CompanyPassword { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
     }
 }
