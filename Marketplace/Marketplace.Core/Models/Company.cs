@@ -17,8 +17,8 @@ namespace Marketplace.Core.Models
         public string Description { get; set; } = null!;
         public string TaxNumber { get; set; } = null!;
         public string RegNumber { get; set; } = null!;
-        public string CompanyEmail { get; set; } = null!;
-        public string CompanyPassword { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
         public OnlineStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
 
