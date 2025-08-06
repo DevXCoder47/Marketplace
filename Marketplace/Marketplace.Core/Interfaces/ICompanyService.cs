@@ -6,6 +6,7 @@ namespace Marketplace.Core.Interfaces
     {
         Task<IEnumerable<Company>> GetCompanies(int skip, int take);
         Task<Company> GetCompanyById(string id);
+        Task<Company> GetCompanyByEmail(string name);
         Task<Company> GetCompanyByName(string name);
         Task<Company> LogIn(string email, string password);
         Task LogOut(string id);

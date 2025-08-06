@@ -33,6 +33,17 @@ namespace Marketplace.Core.Services
             return company;
         }
 
+        public async Task<Company> GetCompanyByEmail(string email)
+        {
+            var company = await _repository.GetAll<Company>()
+            .SingleOrDefaultAsync(c => c.Email.Equals(email));
+
+            if (company == null)
+                throw new ArgumentException("Company not found");
+
+            return company;
+        }
+
         public async Task<Company> GetCompanyByName(string name)
         {
             var company = await _repository.GetAll<Company>()
@@ -46,7 +57,7 @@ namespace Marketplace.Core.Services
 
         public async Task<Company> LogIn(string email, string password)
         {
-            var targetCompany = await GetCompanyByName(email);
+            var targetCompany = await GetCompanyByEmail(email);
 
             if (!HashManager.HashCompare(password, targetCompany.CreatedAt, targetCompany.Password))
             {
