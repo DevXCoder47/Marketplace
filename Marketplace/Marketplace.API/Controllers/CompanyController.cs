@@ -85,7 +85,7 @@ namespace Marketplace.API.Controllers
         {
             try
             {
-                return Ok(_mapper.Map<CompanyDTO>(await _service.LogIn(loginInfo.Email, loginInfo.Password)));
+                return Ok(_mapper.Map<CompanyDTO>(await _service.LogIn(loginInfo.CompanyEmail, loginInfo.CompanyPassword)));
             }
             catch (ArgumentException ex)
             {
