@@ -30,47 +30,6 @@ namespace Marketplace.Storage.Data
 
             modelBuilder.Entity<Company>()
             .HasMany(c => c.Users);
-
-
-            // Всегда вызывайте базовый метод OnModelCreating!
-
-
-            // --- Заполнение начальных данных для ролей (Seed Data) ---
-            // Это добавит предопределенные роли в вашу базу данных при первой миграции.
-           /* modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "client-role-id", Name = "Client", NormalizedName = "CLIENT" },
-                new IdentityRole { Id = "manager-role-id", Name = "Manager", NormalizedName = "MANAGER" },
-                new IdentityRole { Id = "admin-role-id", Name = "Admin", NormalizedName = "ADMIN" }
-            );*/
-
-            // --- Заполнение начальных данных для тестового администратора (ТОЛЬКО ДЛЯ РАЗРАБОТКИ!) ---
-            // Это создаст тестового пользователя с паролем, которого вы сможете использовать для входа.
-            //var hasher = new PasswordHasher<ApplicationUser>();
-            //var adminUser = new ApplicationUser
-            //{
-            //    Id = Guid.Parse("a1234567-89ab-4cde-8012-1234567890ab").ToString(), // Уникальный GUID для Id пользователя
-            //    UserName = "admin@yourmarketplace.com",
-            //    NormalizedUserName = "ADMIN@YOURMARKETPLACE.COM",
-            //    Email = "admin@yourmarketplace.com",
-            //    NormalizedEmail = "ADMIN@YOURMARKETPLACE.COM",
-            //    EmailConfirmed = true, // Считаем email подтвержденным для тестового пользователя
-            //    PasswordHash = "AQAAAAEAACcQAAAAEFa+U4",
-            //    // PasswordHash = hasher.HashPassword(null, "Test"), // <<<<< ИЗМЕНИТЕ ЭТОТ ПАРОЛЬ!
-            //    SecurityStamp = Guid.Parse("a1234567-89ab-4cde-8012-1234567890ab").ToString(),
-            //    Nickname = "SuperAdmin",
-            //    Description = "Главный администратор системы",
-            //    Status = OnlineStatus.Online,
-            //    CreatedAt = new DateTime(2024, 01, 01, 12, 00, 00)
-            //};
-
-            //modelBuilder.Entity<ApplicationUser>().HasData(adminUser);
-
-            //// --- Назначение ролей тестовому администратору ---
-            //// Связываем тестового пользователя с ролями "Admin" и "Manager"
-            //modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-            //    new IdentityUserRole<string> { UserId = adminUser.Id, RoleId = "admin-role-id" },
-            //    new IdentityUserRole<string> { UserId = adminUser.Id, RoleId = "manager-role-id" }
-            //);
         }
     }
 }

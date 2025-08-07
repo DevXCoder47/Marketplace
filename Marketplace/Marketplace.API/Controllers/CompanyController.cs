@@ -78,8 +78,7 @@ namespace Marketplace.API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        #endregion
-        #region Patch Methods
+        
         [HttpPost("login")]
         public async Task<ActionResult<CompanyDTO>> LogInCompany([FromBody] CompanyLoginDTO loginInfo)
         {

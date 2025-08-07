@@ -81,11 +81,6 @@ public class TokenService : ITokenService
 
     public async Task LogoutWithTokensAsync (string userId)
     {
-        /*var token = await _repository.GetAll<RefreshToken>()
-            .SingleAsync(t => t.UserId.Equals(userId));
-
-        await _repository.Delete<RefreshToken>(token.Id);*/
-
         var user = await _userManager.FindByIdAsync(userId);
         user.Status = Marketplace.Core.Helpers.OnlineStatus.Offline;
 

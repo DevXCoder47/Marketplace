@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // твой фронтенд
+            policy.WithOrigins("http://localhost:3000") 
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -62,29 +62,29 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddDbContext<MarketplaceContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => // <<<<< ��������� ��� ApplicationUser
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => 
 {
-    // ������������ ��������� Identity (��� ������������ � ����������������)
-    options.SignIn.RequireConfirmedAccount = true; // ��� ��������, � ���������� ����� true (��������� ������������� email)
-    options.Password.RequireDigit = true;           // ��������� �����
-    options.Password.RequiredLength = 8;            // ����������� �����
-    options.Password.RequireNonAlphanumeric = false; // ��������� �����������
-    options.Password.RequireUppercase = true;       // ��������� ��������� �����
-    options.Password.RequireLowercase = true;       // ��������� �������� �����
-    options.Password.RequiredUniqueChars = 0;       // ���������� ���������� ��������
+    
+    options.SignIn.RequireConfirmedAccount = true; 
+    options.Password.RequireDigit = true;           
+    options.Password.RequiredLength = 8;            
+    options.Password.RequireNonAlphanumeric = false; 
+    options.Password.RequireUppercase = true;       
+    options.Password.RequireLowercase = true;       
+    options.Password.RequiredUniqueChars = 0;       
 
-    options.User.RequireUniqueEmail = true; // �����: email ������ ���� ���������� ��� ������� ������������
+    options.User.RequireUniqueEmail = true; 
 
-    // ��������� ���������� ������� ������� ��� ��������� �������� �����
+   
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 })
-.AddEntityFrameworkStores<MarketplaceContext>() // ��������� Identity ������������ EF Core � ��� DbContext
-//.AddDefaultUI() // ��������� ����������� UI ��� Identity (�������� �����������, ������ � �.�.)
-.AddDefaultTokenProviders(); // ��� ��������� ������� (����� ������, ������������� ����� � �.�.)
-// ************************************************************ JWT **************************************************************
+.AddEntityFrameworkStores<MarketplaceContext>() 
+
+.AddDefaultTokenProviders(); 
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -115,37 +115,29 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment()) ПОТОМ ВЕРНУТЬ
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
-    //app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 app.UseCors("AllowReactApp");
 
-//app.UseStaticFiles();
-
-//app.UseRouting(); ��� ���������
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-/*app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");*/
 
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MarketplaceContext>();
-    dbContext.Database.Migrate(); // This applies any pending migrations
+    dbContext.Database.Migrate(); 
 }
 
 app.Run();
 
-//TEST
+
